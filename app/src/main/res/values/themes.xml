@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme.Register" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Atur atribut-atribut sesuai kebutuhan -->
+    </style>
+    <style name="AppTheme.Dashboard" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Atur atribut-atribut sesuai kebutuhan -->
+    </style>
+
+    <style name="Theme.UTSRyanRizaldy" parent="android:Theme.Material.Light.NoActionBar">
+
+    </style>
+</resources>
