@@ -2,42 +2,143 @@ package com.example.utsryanrizaldy
 
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.Adapter
 import android.widget.Button
-import android.widget.ListView
 import android.widget.Toast
+
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import java.io.File
 
 
 class Dashboard : AppCompatActivity() {
-    private lateinit var lv: ListView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var floatingActionButton: FloatingActionButton
+    private lateinit var myAdapter: MenuAdapter
+    private lateinit var itemList: MutableList<MenuItem>
+    private lateinit var db: FirebaseFirestore
+    private lateinit var progressDialog: ProgressDialog
+    lateinit var Add: Button
+    lateinit var logout: Button
+    private lateinit var mAuth: FirebaseAuth
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_dashboard)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        FirebaseApp.initializeApp(this)
+        db = FirebaseFirestore.getInstance()
+        mAuth = FirebaseAuth.getInstance()
+
+        recyclerView = findViewById(R.id.rcvNews)
+        floatingActionButton = findViewById(R.id.floatAddMenu)
+        logout = findViewById(R.id.logout)
+
+        logout.setOnClickListener {
+            mAuth.signOut()
+            Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this@Dashboard, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
-        lv = findViewById(R.id.listView)
 
-        val menus: Array<MenuClass> = arrayOf(
-            MenuClass("Lemmon Poppy Seed Pancake and Berry", R.drawable.pancake),
-            MenuClass("Salmon Burger With Harrisa Carrot", R.drawable.steak),
-            MenuClass("Dill-Chimicuhurri Shrimp With Roasted Vegetables", R.drawable.salad)
-        )
+        progressDialog = ProgressDialog(this@Dashboard).apply {
+            setTitle("Loading...")
+        }
 
-        val adapter = MenuAdapter(this, R.layout.menu_list, menus)
-        lv.adapter = adapter
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        itemList = ArrayList()
+        myAdapter = MenuAdapter(itemList)
+        recyclerView.adapter = myAdapter
 
+        checkAdmin()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getData()
+    }
+
+    private fun checkAdmin() {
+        val currentUser = mAuth.currentUser
+        currentUser?.let { user ->
+            Log.d("Dashboard", "Checking admin status for user: ${user.email}")
+            db.collection("Admin").document(user.email!!)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        Log.d("Dashboard", "User is admin")
+                        floatingActionButton.visibility = View.VISIBLE
+                        floatingActionButton.setOnClickListener {
+                            val toAddPage = Intent(this@Dashboard, AddMenu::class.java)
+                            startActivity(toAddPage)
+                        }
+
+                        myAdapter.setOnItemClickListener(object : MenuAdapter.OnItemClickListener {
+                            override fun onItemClick(item: MenuItem) {
+                                val intent = Intent(this@Dashboard, EditMenu::class.java).apply {
+                                    putExtra("id", item.id)
+                                    putExtra("dishName", item.dishName)
+                                    putExtra("imageUrl", item.imageUrl)
+                                }
+                                startActivity(intent)
+                            }
+                        })
+                    } else {
+                        Log.d("Dashboard", "User is not admin")
+                        floatingActionButton.visibility = View.GONE
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w("Dashboard", "Error checking admin status", exception)
+                    floatingActionButton.visibility = View.GONE
+                }
+        }
+    }
+
+    private fun getData() {
+        progressDialog.show()
+        db.collection("Menu")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    itemList.clear()
+                    for (document in task.result) {
+                        val item = MenuItem(
+                            document.id,
+                            document.getString("dishName") ?: "",
+                            document.getString("imgUrl") ?: ""
+                        )
+                        itemList.add(item)
+                        Log.d("data", "${document.id} => ${document.data}")
+                    }
+                    myAdapter.notifyDataSetChanged()
+                } else {
+                    Log.w("data", "Error getting documents.", task.exception)
+                }
+                progressDialog.dismiss()
+            }
     }
 }
-//val add : Button = findViewById(R.id.add_to_cart)
-//add.setOnClickListener {
-//    Toast.makeText(this, "added to cart", Toast.LENGTH_SHORT).show()
-//}
+
+

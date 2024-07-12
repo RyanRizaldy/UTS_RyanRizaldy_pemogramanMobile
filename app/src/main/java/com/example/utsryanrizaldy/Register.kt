@@ -11,45 +11,94 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import android.text.TextUtils
+import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Register : AppCompatActivity() {
-    @SuppressLint("MissingInflatedId")
-    companion object {
-        var registeredUsername: String = ""
-        var registeredPassword: String = ""
-    }
+    private lateinit var emailInput: EditText
+    private lateinit var passwordInput: EditText
+    private lateinit var username: EditText
+    private lateinit var registerButton: Button
+    private lateinit var progressBar: ProgressBar
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        val registerButton : Button = findViewById(R.id.register_button)
+        // Inisialisasi Firebase
+        FirebaseApp.initializeApp(this)
+        mAuth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
+
+        username = findViewById(R.id.name)
+        emailInput = findViewById(R.id.email)
+        passwordInput = findViewById(R.id.password)
+        registerButton = findViewById(R.id.register_button)
+        progressBar = findViewById(R.id.progressBar)
+
         registerButton.setOnClickListener {
-            val nameEditText : EditText = findViewById(R.id.name)
-            val name : String = nameEditText.text.toString()
+            val email = emailInput.text.toString().trim()
+            val password = passwordInput.text.toString().trim()
+            val name = username.text.toString().trim()
 
-            val emailEditText : EditText = findViewById(R.id.email)
-            val email : String = emailEditText.text.toString()
-
-            val passwordEditText : EditText = findViewById(R.id.password)
-            val password : String = passwordEditText.text.toString()
-
-         if (name.isEmpty() || email.isEmpty() || password.isEmpty()){
-                Toast.makeText(this, "Please fill the form", Toast.LENGTH_SHORT).show()
+            if (TextUtils.isEmpty(email)) {
+                emailInput.error = "Email is required"
+                return@setOnClickListener
+            }
+            if (TextUtils.isEmpty(password)) {
+                passwordInput.error = "Password is required"
+                return@setOnClickListener
+            }
+            if (TextUtils.isEmpty(name)) {
+                username.error = "Name is required"
                 return@setOnClickListener
             }
 
-             Toast.makeText(this, "Registration Success", Toast.LENGTH_SHORT).show()
-             val intent = Intent(this, MainActivity::class.java)
-             startActivity(intent)
+            progressBar.visibility = View.VISIBLE
 
-            registeredUsername = email
-            registeredPassword = password
-        }
-
-        val loginLink = findViewById<TextView>(R.id.loginLink)
-        loginLink.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
+            mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    progressBar.visibility = View.GONE
+                    if (task.isSuccessful) {
+                        val userId = mAuth.currentUser?.uid
+                        val user = hashMapOf(
+                            "name" to name,
+                            "email" to email
+                        )
+                        userId?.let {
+                            db.collection("users").document(it)
+                                .set(user)
+                                .addOnSuccessListener {
+                                    Toast.makeText(
+                                        this, "Register complete",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(
+                                        this, "Error: ${e.message}",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                        }
+                    } else {
+                        Toast.makeText(
+                            this, "Registration Failed: ${task.exception?.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Log.v("error", task.exception?.message ?: "Unknown error")
+                    }
+                }
         }
     }
+}
