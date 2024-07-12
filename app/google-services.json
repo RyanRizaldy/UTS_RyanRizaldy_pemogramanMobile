@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "635748434837",
+    "project_id": "uaspemogramanmobile-61e34",
+    "storage_bucket": "uaspemogramanmobile-61e34.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635748434837:android:e34d30fc72dd7801e1ac9c",
+        "android_client_info": {
+          "package_name": "com.example.utsryanrizaldy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "635748434837-5g5tp7jll4nbqrqeskdui21cthul4leu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.utsryanrizaldy",
+            "certificate_hash": "97d6cf724b396bcfe7dc6fccf9651a7437bd06bb"
+          }
+        },
+        {
+          "client_id": "635748434837-jq1eg9pev6s22v9ci12135dou71dvqpf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe3fRpgrTpt91Kj6LVIOkwYoo5IHSAmv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "635748434837-jq1eg9pev6s22v9ci12135dou71dvqpf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
