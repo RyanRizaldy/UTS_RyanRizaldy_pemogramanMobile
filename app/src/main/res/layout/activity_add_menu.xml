@@ -22,13 +22,7 @@
             android:src="@drawable/mealsonwheels"
             android:layout_marginTop="10dp"
             />
-        <ImageView
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:src="@drawable/hamburger_icon"
-            android:layout_marginRight="50dp"
 
-            />
     </LinearLayout>
 
 

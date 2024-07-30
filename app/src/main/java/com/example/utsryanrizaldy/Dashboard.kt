@@ -7,9 +7,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.View
 import android.widget.Adapter
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 
 import androidx.activity.enableEdgeToEdge
@@ -30,13 +32,13 @@ import java.io.File
 
 class Dashboard : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var floatingActionButton: FloatingActionButton
+    private lateinit var floatingActionButton: Button
     private lateinit var myAdapter: MenuAdapter
     private lateinit var itemList: MutableList<MenuItem>
     private lateinit var db: FirebaseFirestore
     private lateinit var progressDialog: ProgressDialog
     lateinit var Add: Button
-    lateinit var logout: Button
+    lateinit var logout: ImageView
     private lateinit var mAuth: FirebaseAuth
 
     @SuppressLint("MissingInflatedId")
@@ -139,6 +141,7 @@ class Dashboard : AppCompatActivity() {
                 progressDialog.dismiss()
             }
     }
+
 }
 
 

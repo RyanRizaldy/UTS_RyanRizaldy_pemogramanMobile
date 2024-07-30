@@ -35,6 +35,7 @@ class AddMenu : AppCompatActivity() {
     private lateinit var storage: FirebaseStorage
     private lateinit var progressDialog: ProgressDialog
 
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,6 +145,7 @@ class AddMenu : AppCompatActivity() {
                     Toast.makeText(this@AddMenu, "Menu added successfully", Toast.LENGTH_SHORT).show()
                     dishNameInput.setText("")
                     imageView.setImageResource(0)
+                    goToDaschboard()
                 }
                 .addOnFailureListener { e ->
                     progressDialog.dismiss()
@@ -162,6 +164,7 @@ class AddMenu : AppCompatActivity() {
                     Toast.makeText(this@AddMenu, "Menu added successfully", Toast.LENGTH_SHORT).show()
                     dishNameInput.setText("")
                     imageView.setImageResource(0)
+                    goToDaschboard()
                 }
                 .addOnFailureListener { e ->
                     progressDialog.dismiss()
@@ -173,8 +176,13 @@ class AddMenu : AppCompatActivity() {
                         .show()
                     Log.w("AddMenu", "Error adding document ", e)
                 }
+
         }
 
 
+    }
+    private fun goToDaschboard(){
+        val intent=Intent(this,Dashboard::class.java)
+        startActivity(intent)
     }
 }

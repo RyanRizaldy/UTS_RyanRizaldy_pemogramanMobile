@@ -24,9 +24,10 @@
             android:layout_marginTop="10dp"
             />
         <ImageView
+            android:id="@+id/logout"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:src="@drawable/hamburger_icon"
+            android:src="@drawable/logout"
             android:layout_marginRight="50dp"
 
             />
@@ -51,14 +52,40 @@
             android:textColor="@color/black"
             />
     </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Our Menu"
-        android:textSize="40dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Our Menu"
+                android:textSize="40dp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                />
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="end">
+                <Button
+                    android:id="@+id/floatAddMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="@drawable/button_border"
+                    android:paddingHorizontal="20dp"
+                    android:text="Add Menu"
+                    android:drawableLeft="@drawable/baseline_add_white"
+                    android:textColor="@color/white"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -76,25 +103,17 @@
         tools:ignore="MissingConstraints" />
 
 </LinearLayout>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatAddMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="16dp"
-            android:src="@drawable/baseline_add_24"
-            tools:ignore="MissingConstraints"
-            android:visibility="gone" />
-        <Button
-            android:id="@+id/logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/button_border"
-            android:paddingHorizontal="50dp"
-            android:text="logout"
-            android:textColor="@color/white" />
+
+
+<!--        <Button-->
+<!--            android:id="@+id/logout"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@drawable/button_border"-->
+<!--            android:paddingHorizontal="50dp"-->
+<!--            android:text="logout"-->
+<!--            android:textColor="@color/white" />-->
 
         <RelativeLayout
             android:layout_width="match_parent"
