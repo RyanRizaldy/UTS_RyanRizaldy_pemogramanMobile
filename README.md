@@ -4,4 +4,7 @@ UAS pemograman mobile smester 4
 <br><br>note:gunakan akun admin untuk melakukan operasi CRUD
 <br>email : admin@asd.com
 <br>password : asd123
+<br><br>berikut akun user yang sudah di registrasi di aplikasi:
+<br>email : user@asd.com
+<br>password : asd123
 <br><br>berikut link GDrive untuk file APK dan vidio demo : https://drive.google.com/drive/folders/1ZTuRcwF_HN17_5WQjHFeU-q6-sWVlyEc?usp=sharing 
