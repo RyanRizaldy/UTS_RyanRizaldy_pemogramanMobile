@@ -6,6 +6,15 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        getByName("debug") {
+            storeFile =
+                file("D:\\STTB\\Semester4\\PemogramanMobile\\UTS-Mobile-Programming-1-master\\app\\MOW.jks")
+            storePassword = "asd123"
+            keyAlias = "MowAlias"
+            keyPassword = "asd123"
+        }
+    }
     namespace = "com.example.utsryanrizaldy"
     compileSdk = 34
 
