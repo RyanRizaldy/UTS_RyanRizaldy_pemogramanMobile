@@ -18,7 +18,7 @@
         android:orientation="horizontal"
         >
         <ImageView
-            android:layout_width="320dp"
+            android:layout_width="220dp"
             android:layout_height="80dp"
             android:src="@drawable/mealsonwheels"
             android:layout_marginTop="10dp"
@@ -29,7 +29,6 @@
             android:layout_height="90dp"
             android:src="@drawable/logout"
             android:layout_marginRight="50dp"
-
             />
     </LinearLayout>
     <LinearLayout

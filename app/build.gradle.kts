@@ -9,9 +9,9 @@ android {
     signingConfigs {
         getByName("debug") {
             storeFile =
-                file("D:\\STTB\\Semester4\\PemogramanMobile\\UTS-Mobile-Programming-1-master\\app\\MOW.jks")
+                file("D:\\STTB\\Semester4\\PemogramanMobile\\UTS-Mobile-Programming-1-master\\app\\mow1.jks")
             storePassword = "asd123"
-            keyAlias = "MowAlias"
+            keyAlias = "mow2"
             keyPassword = "asd123"
         }
     }
@@ -38,6 +38,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
